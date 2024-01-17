@@ -48,7 +48,7 @@ func skip() (rune, error) {
 		return 0, err
 	}
 
-	for c == ' ' || c == '\t' || c == '\n' || c == '\f' {
+	for c == ' ' || c == '\t' || c == '\n' || c == '\f' || c == '\r' {
 		c, err = next()
 		if err != nil {
 			return 0, err
