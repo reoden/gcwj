@@ -19,7 +19,6 @@ func interpretAST(n *AstNode) int {
 	}
 
 	if n.op == A_INTLIT {
-
 		fmt.Printf("int %d\n", n.intval)
 	} else {
 		fmt.Printf("%d %s %d\n", leftval, AstOps[n.op], rightval)

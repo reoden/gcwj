@@ -32,5 +32,6 @@ func main() {
 	scan(&T)
 	n := binExpr()
 	printAstDepth(n)
-	interpretAST(&n)
+	x := interpretAST(&n)
+	fmt.Printf("%d\n", x)
 }
