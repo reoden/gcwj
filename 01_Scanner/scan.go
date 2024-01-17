@@ -67,7 +67,7 @@ func scanint(c rune) int {
 		c, err = next()
 		if err != nil {
 			if err != io.EOF {
-				log.Fatal("Could not read integer. Line %d Col $d Char: %q", Line, Column, c)
+				log.Fatalf("Could not read integer. Line %d Col %d Char: %q", Line, Column, c)
 			} else {
 				break
 			}
