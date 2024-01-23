@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 )
@@ -11,25 +10,18 @@ func singleStatements() *AstNode {
 	switch T.token {
 	case T_PRINT:
 		tree = printStatement()
-		break
 	case T_FUNC:
 		tree = functionDeclaration()
-		break
 	case T_VAR:
 		tree = varDeclaration()
-		break
 	case T_IDENT:
-		tree = assignmentStatement()
-		break
+		tree = identifierStatement()
 	case T_IF:
 		tree = ifStatement()
-		break
 	case T_WHILE:
 		tree = whileStatement()
-		break
 	case T_FOR:
 		tree = forStatement()
-		break
 	default:
 		log.Fatalf("Syntax error, token line %d column %d\n", Line, Column)
 	}
@@ -44,7 +36,7 @@ func compundStatements() *AstNode {
 	}
 
 	matchLBrace()
-	for 1 == 1 {
+	for {
 		for isCurrentTokenNewLine() {
 			matchNewLine()
 		}
@@ -68,27 +60,36 @@ func compundStatements() *AstNode {
 			return left
 		}
 	}
-
-	return nil
 }
 
-func assignmentStatement() *AstNode {
+func assignmentStatement(symbolId int) *AstNode {
 	var left, right, tree *AstNode
+	left = makeLeaf(A_ASSIGNVAL, -1, symbolId)
+	matchToken(T_ASSIGN, "=")
+	right = binExpr(0)
+	tree = makeAstNode(A_ASSIGN, left, nil, right, 0, -1)
+
+	return tree
+}
+
+func identifierStatement() *AstNode {
 	matchIdent()
 	id, err := findGlobalSymbol(LastScannedIdent)
 	if err != nil {
 		log.Fatalf("Undeclared variable %s", LastScannedIdent)
 		os.Exit(7)
 	}
+	switch GlobalSymbols[id].symType {
+	case TYPE_FUNC:
+		return functionCallStatement(id)
+	case TYPE_INT:
+		return assignmentStatement(id)
+	default:
+		log.Fatalf("Unknown type for identifier %v\n", GlobalSymbols[id].name)
+		os.Exit(8)
+	}
 
-	left = makeLeaf(A_ASSIGNVAL, -1, id)
-	matchToken(T_ASSIGN, "=")
-	right = binExpr(0)
-	tree = makeAstNode(A_ASSIGN, left, nil, right, 0, -1)
-	fmt.Fprint(OutputFile, interpretAST(tree))
-	OutputFile.Flush()
-
-	return tree
+	return nil
 }
 
 func printStatement() *AstNode {
@@ -159,4 +160,12 @@ func forStatement() *AstNode {
 	tree = makeAstNode(A_WHILE, condAST, tree, nil, -1, -1)
 	tree = makeAstNode(A_GLUETO, preopAst, nil, tree, -1, -1)
 	return tree
+}
+
+func functionCallStatement(symbolId int) *AstNode {
+	matchLPAREN()
+	matchRPAREN()
+	var tree *AstNode
+	makeLeaf(A_FUNCALL, -1, symbolId)
+	return mkastunary(A_FUNCALL, tree, -1, symbolId)
 }

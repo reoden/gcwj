@@ -46,7 +46,6 @@ func getDepth(n *AstNode) int {
 		return 0
 	}
 
-	fmt.Printf("%v\n", n)
 	depth := 1
 	depthLeft := getDepth(n.left)
 	depthRight := getDepth(n.right)

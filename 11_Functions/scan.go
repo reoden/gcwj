@@ -64,10 +64,7 @@ func skip() (rune, error) {
 }
 
 func isCurrentTokenNewLine() bool {
-	if T.token == T_NEWLINE {
-		return true
-	}
-	return false
+	return T.token == T_NEWLINE
 }
 
 func matchToken(t int, what string) {
@@ -120,27 +117,22 @@ func getKeyword(ident string) int {
 		if ident == "print" {
 			return T_PRINT
 		}
-		break
 	case 'v':
 		if ident == "var" {
 			return T_VAR
 		}
-		break
 	case 'i':
 		if ident == "if" {
 			return T_IF
 		}
-		break
 	case 'e':
 		if ident == "else" {
 			return T_ELSE
 		}
-		break
 	case 'w':
 		if ident == "while" {
 			return T_WHILE
 		}
-		break
 	case 'f':
 		if ident == "for" {
 			return T_FOR
@@ -148,7 +140,6 @@ func getKeyword(ident string) int {
 		if ident == "fn" {
 			return T_FUNC
 		}
-		break
 	}
 	return 0
 }
@@ -178,46 +169,32 @@ func scan(t *Token) bool {
 	switch c {
 	case '\n':
 		t.token = T_NEWLINE
-		break
 	case ';':
 		t.token = T_SEMI
-		break
 	case '+':
 		t.token = T_PLUS
-		break
 	case '-':
 		t.token = T_MINUS
-		break
 	case '*':
 		t.token = T_STAR
-		break
 	case '/':
 		t.token = T_SLASH
-		break
 	case '{':
 		t.token = T_LBRACE
-		break
 	case '}':
 		t.token = T_RBRACE
-		break
 	case '(':
 		t.token = T_LPAREN
-		break
 	case ')':
 		t.token = T_RPAREN
-		break
 	case '=':
 		scanAdditionalChar('=', T_EQ, T_ASSIGN)
-		break
 	case '>':
 		scanAdditionalChar('=', T_GE, T_GT)
-		break
 	case '<':
 		scanAdditionalChar('=', T_LE, T_LT)
-		break
 	case '!':
 		scanAdditionalChar('=', T_NEQ, -1)
-		break
 	default:
 		if unicode.IsDigit(c) {
 			t.intvalue = scanint(c)

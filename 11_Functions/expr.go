@@ -31,14 +31,12 @@ func primary() *AstNode {
 	switch T.token {
 	case T_INTLIT:
 		n = makeLeaf(A_INTLIT, T.intvalue, -1)
-		break
 	case T_IDENT:
 		id, err := findGlobalSymbol(LastScannedIdent)
 		if err != nil {
 			log.Fatalf("Unknown variable %s, %v\n", LastScannedIdent, err)
 		}
 		n = makeLeaf(A_IDENT, -1, id)
-		break
 	default:
 		log.Fatalf("Syntax error on line %d column %d ", Line, Column)
 		os.Exit(4)

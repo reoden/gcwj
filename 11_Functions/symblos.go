@@ -3,13 +3,14 @@ package main
 import "errors"
 
 type Symtable struct {
-	name string
+	name    string
+	symType VariableType
 }
 
 var GlobalSymbols = []Symtable{}
 
-func addGlobalSymbol(name string) int {
-	GlobalSymbols = append(GlobalSymbols, Symtable{name: name})
+func addGlobalSymbol(name string, symtype VariableType) int {
+	GlobalSymbols = append(GlobalSymbols, Symtable{name: name, symType: symtype})
 	return len(GlobalSymbols) - 1
 }
 
@@ -20,10 +21,6 @@ func findGlobalSymbol(name string) (int, error) {
 		}
 	}
 	return -1, errors.New("Could not find global symbol")
-}
-
-func getNextGlobalPosition() int {
-	return len(GlobalSymbols)
 }
 
 func findLastGlobalSymbol() int {
