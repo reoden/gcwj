@@ -179,10 +179,10 @@ func scan(t *Token) bool {
 		scanAdditionalChar('=', T_EQ, T_ASSIGN)
 		break
 	case '>':
-		scanAdditionalChar('=', T_GE, T_GT)
+		scanAdditionalChar('=', T_GT, T_GE)
 		break
 	case '<':
-		scanAdditionalChar('=', T_LE, T_LT)
+		scanAdditionalChar('=', T_LT, T_LE)
 		break
 	case '!':
 		scanAdditionalChar('=', T_NEQ, -1)
