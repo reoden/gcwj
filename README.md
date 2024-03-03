@@ -1,2 +1,2 @@
 # gcwj
-based on (acwj)[https://github.com/DoctorWkt/acwj]
+based on https://github.com/DoctorWkt/acwj
